@@ -6,19 +6,18 @@ import { useMap } from "react-leaflet";
 interface RoutingProps {
   puntoA: L.LatLng;
   puntoB: L.LatLng;
+  waypoints?: L.LatLng[];
 }
 
-const RoutingControl = ({ puntoA, puntoB }: RoutingProps) => {
+const RoutingControl = ({ puntoA, puntoB, waypoints = [] }: RoutingProps) => {
   const map = useMap();
 
   useEffect(() => {
     if (!puntoA || !puntoB) return;
 
     const control = L.Routing.control({
-      waypoints: [puntoA, puntoB],
-      lineOptions: {
-        styles: [{ color: "blue", weight: 4 }],
-      },
+      waypoints: [puntoA, ...waypoints, puntoB],
+      lineOptions: { styles: [{ color: "blue", weight: 4 }] },
       addWaypoints: false,
       routeWhileDragging: false,
       draggableWaypoints: false,
@@ -29,7 +28,7 @@ const RoutingControl = ({ puntoA, puntoB }: RoutingProps) => {
     return () => {
       map.removeControl(control);
     };
-  }, [puntoA, puntoB, map]);
+  }, [puntoA, puntoB, waypoints, map]);
 
   return null;
 };
