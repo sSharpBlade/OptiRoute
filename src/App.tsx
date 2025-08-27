@@ -1,5 +1,5 @@
-function App() {
-  return <></>;
-}
+import MapView from "./components/MapView";
 
-export default App;
+export default function App() {
+  return <MapView />;
+}
