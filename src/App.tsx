@@ -1,5 +1,5 @@
-import MapView from "./components/MapView";
+import RouteCalculator from "./components/RouteCalculator";
 
 export default function App() {
-  return <MapView />;
+  return <RouteCalculator />;
 }
