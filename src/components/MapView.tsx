@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
-import { type LatLngExpression, LatLng } from "leaflet";
+import type { LatLngExpression, LatLng } from "leaflet";
+import RoutingControl from "./RoutingControl";
+import "leaflet/dist/leaflet.css";
 
 const MapView = () => {
   const ambatoCenter: LatLngExpression = [-1.2491, -78.6167];
-
   const [puntoA, setPuntoA] = useState<LatLng | null>(null);
   const [puntoB, setPuntoB] = useState<LatLng | null>(null);
 
@@ -31,7 +32,6 @@ const MapView = () => {
 
         <MapClickHandler />
 
-        {/* Marcador Punto A */}
         {puntoA && (
           <Marker position={puntoA}>
             <Popup>
@@ -42,7 +42,6 @@ const MapView = () => {
           </Marker>
         )}
 
-        {/* Marcador Punto B */}
         {puntoB && (
           <Marker position={puntoB}>
             <Popup>
@@ -52,6 +51,8 @@ const MapView = () => {
             </Popup>
           </Marker>
         )}
+
+        {puntoA && puntoB && <RoutingControl puntoA={puntoA} puntoB={puntoB} />}
       </MapContainer>
     </div>
   );
