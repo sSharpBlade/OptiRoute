@@ -106,11 +106,6 @@ El sistema maneja los siguientes eventos de LRM:
 
 ## 🔧 Configuración
 
-### Variables de entorno
-```env
-# Agrega aquí las variables necesarias si las hay
-```
-
 ### Servicios externos utilizados
 - **OSRM Demo**: Servidor público de ruteo
 - **OpenStreetMap Tiles**: Fuente de mapas base
