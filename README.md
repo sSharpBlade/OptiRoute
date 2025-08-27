@@ -1,69 +1,147 @@
-# React + TypeScript + Vite
+# 🗺️ Proyecto de Búsqueda de Rutas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación web interactiva para la búsqueda y visualización de rutas en mapas, construida con React y Leaflet.
 
-Currently, two official plugins are available:
+## ✨ Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🌍 **Mapas interactivos** con soporte para múltiples capas
+- 🧭 **Cálculo de rutas** optimizado con OSRM
+- 📍 **Geocodificación bidireccional** (dirección ↔ coordenadas)
+- 🎯 **Marcadores personalizados** para origen, paradas y destino
+- 📱 **Interfaz responsiva** con Tailwind CSS
+- ⚡ **Búsqueda en tiempo real** con debounce integrado
+- 📊 **Información detallada** de distancia, tiempo e instrucciones
 
-## Expanding the ESLint configuration
+## 🛠️ Stack Tecnológico
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Frontend Base
+- **React + TypeScript** - Framework principal y tipado estático
+- **Vite** - Bundler y servidor de desarrollo
+- **Tailwind CSS** - Framework de utilidades CSS
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Mapas y Navegación
+- **Leaflet** - Motor de mapas en el navegador
+- **React-Leaflet** - Componentes React para Leaflet
+- **Leaflet Routing Machine (LRM)** - Cálculo y visualización de rutas
+- **OSRM** - Servicio de ruteo (Open Source Routing Machine)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Geocodificación
+- **Nominatim (OpenStreetMap)** - Servicio de geocodificación
+  - Búsqueda: texto → coordenadas
+  - Reversa: coordenadas → dirección
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### UI y Utilidades
+- **lucide-react** - Biblioteca de iconos
+- **clsx** - Composición condicional de clases CSS
+- **tailwind-merge** - Resolución de conflictos en clases Tailwind
+
+## 📦 Instalación
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone <url-del-repositorio>
+   cd proyecto-rutas
+   ```
+
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Iniciar servidor de desarrollo**
+   ```bash
+   npm run dev
+   ```
+
+## 🚀 Uso
+
+### Configuración básica del mapa
+
+El proyecto utiliza OpenStreetMap como fuente de tiles:
+
+```typescript
+// Asegúrate de importar los estilos de Leaflet
+import "leaflet/dist/leaflet.css";
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Características principales
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+#### 🗺️ **Visualización de mapas**
+- Mapas interactivos con zoom y paneo
+- Tiles de OpenStreetMap con atribución requerida
+- Marcadores personalizados tipo "dot" con colores diferenciados
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+#### 🧭 **Cálculo de rutas**
+- Integración con OSRM para cálculo de rutas optimizadas
+- Soporte para múltiples paradas intermedias
+- Información detallada de:
+  - Distancia total en kilómetros
+  - Tiempo estimado de viaje
+  - Instrucciones paso a paso
+
+#### 🔍 **Búsqueda de ubicaciones**
+- Geocodificación en tiempo real con Nominatim
+- Debounce implementado para optimizar las consultas
+- Búsqueda bidireccional (coordenadas ↔ direcciones)
+
+## ⚙️ Arquitectura
+
+### Componentes principales
+- **MapContainer**: Contenedor principal del mapa
+- **TileLayer**: Capa de tiles de OpenStreetMap
+- **Marker**: Marcadores personalizados para puntos de interés
+- **RoutingControl**: Control de ruteo con LRM
+
+### Utilidades propias
+- **Debounce personalizado**: Optimización de consultas a Nominatim
+- **DivIcon personalizado**: Marcadores coloreados para diferentes tipos de puntos
+- **Gestión de refs**: Manejo eficiente de instancias del control de ruteo
+- **Event listeners**: Manejo robusto de eventos de ruteo
+
+### Eventos de ruteo
+El sistema maneja los siguientes eventos de LRM:
+- `routesfound`: Cuando se encuentran rutas disponibles
+- `routeselected`: Cuando se selecciona una ruta específica
+- `routingerror`: Manejo de errores en el cálculo de rutas
+
+## 🔧 Configuración
+
+### Variables de entorno
+```env
+# Agrega aquí las variables necesarias si las hay
 ```
+
+### Servicios externos utilizados
+- **OSRM Demo**: Servidor público de ruteo
+- **OpenStreetMap Tiles**: Fuente de mapas base
+- **Nominatim**: Servicio de geocodificación de OSM
+
+## 📱 Responsividad
+
+El proyecto está diseñado para funcionar en:
+- 💻 Escritorio
+- 📱 Dispositivos móviles
+- 📟 Tablets
+
+## 🤝 Contribución
+
+1. Fork del proyecto
+2. Crear rama para nueva característica (`git checkout -b feature/nueva-caracteristica`)
+3. Commit de cambios (`git commit -am 'Agregar nueva característica'`)
+4. Push a la rama (`git push origin feature/nueva-caracteristica`)
+5. Crear Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para detalles.
+
+## 🙏 Reconocimientos
+
+- **OpenStreetMap** - Datos de mapas
+- **Leaflet** - Motor de mapas
+- **OSRM** - Servicio de ruteo
+- **Nominatim** - Servicio de geocodificación
+
+---
+
+**Nota**: Este proyecto utiliza servicios públicos para demostración. Para uso en producción, considera implementar tus propios servidores de tiles y ruteo para mayor control y rendimiento.
